@@ -6,11 +6,12 @@ const flash = require('connect-flash');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const { sendOtpEmail } = require('./mailer');
+require ("dotenv").config();
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const uri = 'mongodb://127.0.0.1:27017';
+const uri = process.env.MONGO_URI;
 const dbName = 'SecretShelf';
 
 // Middleware setup
@@ -62,12 +63,22 @@ const upload = multer({
 
 // MongoDB connection
 let db;
-MongoClient.connect(uri, { useUnifiedTopology: true })
-    .then(client => {
-        db = client.db(dbName);
-        console.log('✅ Connected to MongoDB');
-    })
-    .catch(err => console.error('❌ MongoDB connection failed:', err));
+
+async function connectToMongo() {
+  try {
+    const client = await MongoClient.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    db = client.db(dbName);
+    console.log("✅ Connected to MongoDB Atlas");
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err);
+    process.exit(1); // Stop server if DB fails
+  }
+}
+
+connectToMongo();
 
 // Middleware to inject flash and user data
 app.use((req, res, next) => {
