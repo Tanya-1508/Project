@@ -414,5 +414,5 @@ app.post('/reset_password', async (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log('🚀 Server running at http://localhost:${PORT}');
+    console.log('🚀 website is live at https://project-ihgt.onrender.com');
 });
