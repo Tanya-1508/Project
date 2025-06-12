@@ -17,9 +17,7 @@ const dbName = 'SecretShelf';
 // Middleware setup
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/frontend', express.static(path.join(__dirname,'..', 'frontend')));
-app.use('/assets', express.static(path.join(__dirname,'..', 'frontend','assets')));
-app.use('/dist', express.static(path.join(__dirname,'..', 'frontend','dist')));
+
 
 app.use(session({
     secret: 'your-secret-key',
